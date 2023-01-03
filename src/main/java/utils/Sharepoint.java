@@ -69,7 +69,7 @@ public class Sharepoint {
      List<String> localAttachments = new ArrayList<String>(); 
      for (int i=0; i<shptAttachments.size(); i++) {
 	     String file = shptAttachments.get(i);  // source
-	     String targetFolder = "C:/TEMP";
+	     String targetFolder = "C:/TEMP" + file;
 	     HttpGet request2 = new HttpGet("/_api/web/GetFileByServerRelativeUrl('" + file + "')/$value");
 	     CloseableHttpResponse response2 = null;
 	     try {

@@ -7,5 +7,5 @@ import com.reporter.model.Users;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
-
+	Users findByUsername(String username);
 }

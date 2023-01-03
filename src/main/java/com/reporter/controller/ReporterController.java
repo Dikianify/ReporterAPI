@@ -63,8 +63,9 @@ public class ReporterController {
 //        	SendEmail.sendEmail(itemDetails, attachments);
         }
         
-//        @RequestMapping(value="/users/{userId}", method=RequestMethod.DELETE)
-//        public void readStatus(@PathVariable(value = "userId") Long id) {
-//            userService.deleteUser(id);
-//        }
+        @RequestMapping(value="/login", method=RequestMethod.POST)
+        public void readStatus(@PathVariable(value = "username") String username, @PathVariable(value = "userPass") String pass) {
+            Users user = userService.getUserFromUsername(username);
+            
+        }
 }

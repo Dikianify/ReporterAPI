@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.reporter.model.Users;
 import com.reporter.repository.UsersRepository;
 
+import utils.SecurePasswordGenerator;
+
 import java.util.List;
 
 @Service
@@ -27,6 +29,10 @@ public class UserService {
         public Users getUser(Long userId) {
         	return userRepository.findById(userId).get();
         }
+        
+        public Users getUserFromUsername(String username) {
+        	return userRepository.findByUsername(username);
+        }
 
         // DELETE
         public void deleteUser(Long userId) {
@@ -36,10 +42,13 @@ public class UserService {
      // UPDATE
         public Users updateUser(Long userId, Users userDetails) {
                 Users user = userRepository.findById(userId).get();
-                user.setApi_user(userDetails.getApi_user());
-                user.setApi_pass(userDetails.getApi_pass());
-                user.setShpt_user(userDetails.getShpt_user());
-                user.setShpt_pass(userDetails.getShpt_pass());
+                user.setUsername(userDetails.getUsername());
+                try {
+					user.setPassword(userDetails.getPassword());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 
                 return userRepository.save(user);                                
         }

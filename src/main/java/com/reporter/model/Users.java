@@ -1,5 +1,6 @@
 package com.reporter.model;
 
+import utils.SecurePasswordGenerator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,19 +17,25 @@ public class Users {
 	@Column(name="_id")
     private Long _id;
 	
-	@Column(name="api_user")
-	private String api_user;
+	@Column(name="username")
+	private String username;
 	
-	@Column(name="api_pass")
-	private String api_pass;
+	@Column(name="password")
+	private String password;
 	
-	@Column(name="shpt_user")
-	private String shpt_user;
-	
-	@Column(name="shpt_pass")
-	private String shpt_pass;
+	@Column(name="salt")
+	private String salt;
 	
 	
+	
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 	public Long get_id() {
 		return _id;
 	}
@@ -37,37 +44,34 @@ public class Users {
 		this._id = _id;
 	}
 
-	public String getApi_user() {
-		return api_user;
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public void setApi_user(String api_user) {
-		this.api_user = api_user;
+	
+	public String getPassword() {
+		return password;
 	}
 
-	public String getApi_pass() {
-		return api_pass;
+	public void setPassword(String password) throws Exception {
+        String salt = SecurePasswordGenerator.getNewSalt();
+        String encryptedPassword = SecurePasswordGenerator.getEncryptedPassword(password, salt);
+        setSalt(salt);
+		this.password = encryptedPassword;
 	}
 
-	public void setApi_pass(String api_pass) {
-		this.api_pass = api_pass;
-	}
-
-	public String getShpt_user() {
-		return shpt_user;
-	}
-
-	public void setShpt_user(String shpt_user) {
-		this.shpt_user = shpt_user;
-	}
-
-	public String getShpt_pass() {
-		return shpt_pass;
-	}
-
-	public void setShpt_pass(String shpt_pass) {
-		this.shpt_pass = shpt_pass;
-	}
-
-
+    public boolean authenticateUser(String inputPass) throws Exception {
+            String salt = getSalt();
+            String calculatedHash = SecurePasswordGenerator.getEncryptedPassword(inputPass, salt);
+            if (calculatedHash.equals(getPassword())) {
+                return true;
+            } else {
+                return false;
+            }
+    }
+ 
 }
