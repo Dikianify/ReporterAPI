@@ -23,10 +23,18 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class Sharepoint {
 
+	@Value("${sharepointuser}")
+	private static String username;
+	
+	@Value("${sharepointpass}")
+	private static String pwd;
+	
+	
   /**
    * download a file from a sharepoint library
  * @param user
@@ -36,9 +44,6 @@ public class Sharepoint {
       .setRetryHandler(new DefaultHttpRequestRetryHandler(0,false))
       .build();
 
-
-     String username = user.getShpt_user();
-     String pwd = user.getShpt_pass();
      CredentialsProvider credsProvider = new BasicCredentialsProvider();
      credsProvider.setCredentials(AuthScope.ANY,
         new NTCredentials(username, pwd, "", ""));

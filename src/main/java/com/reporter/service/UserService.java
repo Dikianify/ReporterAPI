@@ -1,12 +1,11 @@
 package com.reporter.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.reporter.model.Users;
 import com.reporter.repository.UsersRepository;
-
-import utils.SecurePasswordGenerator;
 
 import java.util.List;
 
@@ -14,10 +13,18 @@ import java.util.List;
 public class UserService {
         
         @Autowired
-        	UsersRepository userRepository;
+        UsersRepository userRepository;
+        
+    	@Autowired
+    	private PasswordEncoder bcryptEncoder;
 
      // CREATE 
         public Users createUser(Users user) {
+			try {
+				user.setPassword(bcryptEncoder.encode(user.getPassword()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
             return userRepository.save(user);
         }
 
@@ -44,9 +51,8 @@ public class UserService {
                 Users user = userRepository.findById(userId).get();
                 user.setUsername(userDetails.getUsername());
                 try {
-					user.setPassword(userDetails.getPassword());
+					user.setPassword(bcryptEncoder.encode(userDetails.getPassword()));
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 

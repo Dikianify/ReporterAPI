@@ -28,7 +28,7 @@ public class ReporterController {
         OrderedItemsService ordereditemsservice;
         
 
-        @RequestMapping(value="/users", method=RequestMethod.POST)
+        @RequestMapping(value="/register", method=RequestMethod.POST)
         public Users createUser(@RequestBody Users user) {
             return userService.createUser(user);
         }

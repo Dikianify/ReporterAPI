@@ -1,6 +1,5 @@
 package com.reporter.model;
 
-import utils.SecurePasswordGenerator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,18 +22,6 @@ public class Users {
 	@Column(name="password")
 	private String password;
 	
-	@Column(name="salt")
-	private String salt;
-	
-	
-	
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
 
 	public Long get_id() {
 		return _id;
@@ -58,20 +45,7 @@ public class Users {
 	}
 
 	public void setPassword(String password) throws Exception {
-        String salt = SecurePasswordGenerator.getNewSalt();
-        String encryptedPassword = SecurePasswordGenerator.getEncryptedPassword(password, salt);
-        setSalt(salt);
-		this.password = encryptedPassword;
+		this.password = password;
 	}
 
-    public boolean authenticateUser(String inputPass) throws Exception {
-            String salt = getSalt();
-            String calculatedHash = SecurePasswordGenerator.getEncryptedPassword(inputPass, salt);
-            if (calculatedHash.equals(getPassword())) {
-                return true;
-            } else {
-                return false;
-            }
-    }
- 
 }
