@@ -1,5 +1,6 @@
 package com.reporter.model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class OrderedItems {
 	@Column(name="userid")
 	private Long userid;
 	
-	@Column(name="indentifier")
+	@Column(name="identifier")
 	private String identifier;
 	
 	@Column(name="fax")
@@ -42,16 +43,24 @@ public class OrderedItems {
 	private String attachments;
 	
 	@Column(name="status")
-	private String status;
+	private String status = "queued";
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Column(name="status_message")
 	private String statusMessage;
 	
 	@Column(name="retries")
-	private String retries;
+	private Integer retry = 0;
 	
 	@Column(name="date")
-	private Date date;
+	private Timestamp date = new Timestamp(new Date().getTime());
 	
 	public Long get_id() {
 		return _id;
@@ -102,6 +111,9 @@ public class OrderedItems {
 	}
 
 	public List<String> getAttachments() {
+		if (attachments == null) {
+			return new ArrayList<String>();
+		}
 		List<String> attachmentList = new ArrayList<String>(Arrays.asList(attachments.split(",")));
 		return attachmentList;
 	}

@@ -44,7 +44,7 @@ public class Users {
 		return password;
 	}
 
-	public void setPassword(String password) throws Exception {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 

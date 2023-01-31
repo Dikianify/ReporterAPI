@@ -17,15 +17,15 @@ public class UserService {
         
     	@Autowired
     	private PasswordEncoder bcryptEncoder;
-
+  
      // CREATE 
-        public Users createUser(Users user) {
-			try {
-				user.setPassword(bcryptEncoder.encode(user.getPassword()));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-            return userRepository.save(user);
+        public Users createUser(Users newUser) {
+        	Users oldUser = getUserFromUsername(newUser.getUsername());
+        	if (oldUser == null) {
+				newUser.setPassword(bcryptEncoder.encode(newUser.getPassword()));
+	            return userRepository.save(newUser);
+        	}
+        	return null;
         }
 
         // READ
@@ -47,16 +47,17 @@ public class UserService {
         }
         
      // UPDATE
-        public Users updateUser(Long userId, Users userDetails) {
-                Users user = userRepository.findById(userId).get();
-                user.setUsername(userDetails.getUsername());
-                try {
+        public String updateUser(String username, Users userDetails) {
+        		Users user = getUserFromUsername(username);
+        		Users oldUser = getUserFromUsername(userDetails.getUsername());
+        		if (oldUser == null || user.getUsername() == oldUser.getUsername()) {
+	                user.setUsername(userDetails.getUsername());
+	                
 					user.setPassword(bcryptEncoder.encode(userDetails.getPassword()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-                
-                return userRepository.save(user);                                
+					userRepository.save(user);
+	                return "Success";
+                }
+        		return "Username is taken";
         }
 
 }
