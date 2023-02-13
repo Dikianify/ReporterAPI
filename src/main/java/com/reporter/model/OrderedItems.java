@@ -45,6 +45,27 @@ public class OrderedItems {
 	@Column(name="status")
 	private String status = "queued";
 	
+	@Column(name="status_message")
+	private String statusMessage;
+	
+	@Column(name="retries")
+	private Integer retries = 0;
+	
+	@Column(name="date")
+	private Timestamp date = new Timestamp(new Date().getTime());
+	
+	@Column(name="currentEfaxID")
+	private String currentEfaxID;
+
+	  
+	public String getCurrentEfaxID() {
+		return currentEfaxID;
+	}
+
+	public void setCurrentEfaxID(String currentEfaxID) {
+		this.currentEfaxID = currentEfaxID;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -52,15 +73,14 @@ public class OrderedItems {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public Integer getRetries() {
+		return retries;
+	}
 
-	@Column(name="status_message")
-	private String statusMessage;
-	
-	@Column(name="retries")
-	private Integer retry = 0;
-	
-	@Column(name="date")
-	private Timestamp date = new Timestamp(new Date().getTime());
+	public void setRetries(Integer retries) {
+		this.retries = retries;
+	}
 	
 	public Long get_id() {
 		return _id;

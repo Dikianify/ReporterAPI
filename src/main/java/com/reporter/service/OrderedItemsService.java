@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 import com.reporter.model.OrderedItems;
 import com.reporter.repository.OrderedItemsRepository;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class OrderedItemsService {
             return itemsRepository.findAll();
         }
         
-        public List<OrderedItems> getItemFromStatus(Long status) {
+        public List<OrderedItems> getItemFromStatus(String status) {
             return itemsRepository.findByStatus(status);
         }
         
@@ -43,7 +42,7 @@ public class OrderedItemsService {
         public String getStatus(Long userId, Long itemId) {
         	Optional<OrderedItems> item = itemsRepository.findById(itemId);
         	if (item.isPresent()) {
-        		Long itemUserId = item.get().getUserid( );
+        		Long itemUserId = item.get().getUserid();
         		if (itemUserId == userId) {
         			return item.get().getStatus();
         		}
@@ -52,18 +51,22 @@ public class OrderedItemsService {
         	return "Invalid item ID";
         }
         
-        public List<OrderedItems> getMultiStatus(String date, Long userId) {
+        public List<OrderedItems> getMultiStatus(Date date, Long userId) {
         	return itemsRepository.findByDate(date, userId);
         }
         
+        public List<OrderedItems> requeueFromDate(Date date, Long userId) {
+        	return itemsRepository.findByFailed(date, userId);
+        }
         
+        public OrderedItems getSentByFax(long fax) {
+        	return itemsRepository.findSentByFax(fax);
+        }
        
         
         public OrderedItems getItem(Long itemId) {
-        	OrderedItems item = itemsRepository.findById(itemId).get();
-        	return item;
+        	return itemsRepository.findById(itemId).get();
         }
-        
         
 
         // DELETE
@@ -72,3 +75,4 @@ public class OrderedItemsService {
         }
         
 }
+

@@ -52,7 +52,6 @@ public class UserService {
         		Users oldUser = getUserFromUsername(userDetails.getUsername());
         		if (oldUser == null || user.getUsername() == oldUser.getUsername()) {
 	                user.setUsername(userDetails.getUsername());
-	                
 					user.setPassword(bcryptEncoder.encode(userDetails.getPassword()));
 					userRepository.save(user);
 	                return "Success";
